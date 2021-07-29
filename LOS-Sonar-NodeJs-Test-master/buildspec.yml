@@ -1,0 +1,58 @@
+# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
+version: 0.2
+env:
+  parameter-store:
+    #Login: sonartoken
+    #Host: Host
+    #Username: username
+    #Password: password
+    Project: nodejsproject
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10  
+    commands:
+      - echo Installing Mocha...
+      - npm install -g mocha
+      
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+      - npm install unit.js
+      #- npm install -g snyk
+      #- snyk test 
+      #- snyk monitor
+      #- echo snyk test success
+      - npm install -g sonarqube-scanner
+      #- PRJ="${Project}Test"
+      #- echo "${PRJ}"
+      - sonar-scanner -Dsonar.host.url=http://34.204.200.194:9000 -Dsonar.login=b888e540f36758e6bbe374f3fdf326404894f5e4 -Dsonar.login=admin -Dsonar.password=admin
+     # - echo Logging in to Amazon ECR...
+     # - aws --version
+     # - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+     # - REPOSITORY_URI=$TemplateURL
+     # - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+     # - IMAGE_TAG=${COMMIT_HASH:=latest}
+     # - echo build started
+  build:
+    commands:
+      - echo Build started on `date`
+  #    - echo Building the Docker image...          
+   #   - docker build -t $REPOSITORY_URI:latest .
+    #  - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+     # - echo Pushing the Docker images...
+      #- docker push $REPOSITORY_URI:latest
+     # - docker push $REPOSITORY_URI:latest    
+#artifacts:
+  #type: zip
+  #files:
+    #- app.js
+   # - index.html
+    #- package.json
+   # - node_modules/async/*
+  #  - node_modules/lodash/*
+ # discard-paths: yes
