@@ -1,0 +1,9 @@
+{
+  "name": "SampleNodejs-test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+        "start": "node index.js",  
+        "start-docker": "docker up --build --abort-on-container-exit"
+  }
+  }
